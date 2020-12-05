@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background-image: url('./bg.jpg');
+        background-size: cover;
+        color: white;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 36px;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 2px #000;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 28px;
+        text-shadow: 2px 2px 2px #000;
+    }
+
+    p {
+        text-shadow: 2px 2px 2px #000;
+
+    }
+
+    .wrapper {
+        background-color: rgba(0, 0, 0, .5);
+        width: 60%;
+        margin: 15% auto 0;
+        padding: 20px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .inputBox {
+        padding: 5px 20px;
+        background-color: white;
+        border-radius: 20px;
+        width: 80%;
+        margin-bottom: 20px;
+    }
+
+    input {
+        margin: auto;
+        border: none;
+        width: 100%;
+    }
+
+    button {
+        margin: auto;
+        font-size: 28px;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: 1px solid white;
+        padding: 2px;
+    }
+
+    @media screen and (max-width: 600px) {
+        .wrapper {
+            width: 100%;
+            margin: 30% 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-size: 145%;
+        }
+    }
+</style>
+
+<body>
+    <div class="wrapper">
+        <h1>求道日期查詢服務</h1>
+        <h2>請輸入您的姓名</h1>
+            <div class="inputBox">
+                <input type="text" name="name" id="searchName" placeholder="王小明">
+            </div>
+            <button id="submit">
+                搜尋
+            </button>
+            <p>(由於資料數量眾多, 搜尋時間會比較長, 請見諒)</p>
+            <div id="tableWrapper">
+            </div>
+    </div>
+    <script>
+
+        let input = document.querySelector('#searchName')
+        let button = document.querySelector('#submit')
+        let tableWrapper = document.querySelector('#tableWrapper')
+
+        let result = []
+        let loading = false
+
+        button.addEventListener('click', (e) => {
+            e.preventDefault()
+
+            if (!input.value.trim()) {
+                return
+            }
+            button.disabled = true
+            button.innerText = '搜尋中...'
+            let url = 'https://script.google.com/macros/s/AKfycbw9SGO_tSD-L9AYSePg_8-0MN284C3a9A4nYQNzcf-nQGr6ceI/exec?name='
+            fetch(url + input.value).then(function (response) {
+                return response.json();
+            })
+                .then(function (myJson) {
+                    console.log(myJson);
+                    button.disabled = false
+                    button.innerText = '搜尋'
+                    result = myJson.data
+
+                    let tableDom = '<table>'
+                    tableDom += `
+                        <tr>
+                        <th>求道人姓名</th>
+                        <th>求道日期(民國)</th>
+                        <th>點傳師</th>
+                        <th>引師</th>
+                        <th>保師</th>
+                    </tr>`
+                    result.forEach(item => {
+                        tableDom += `
+                            <tr>
+                            <td>${item.name}</td>
+                            <td>${item.date}</td>
+                            <td>${item.president}</td>
+                            <td>${item.guider}</td>
+                            <td>${item.teacher}</td>
+                        </tr>`
+                    });
+                    tableDom += '</table>'
+
+                    tableWrapper.innerHTML = tableDom
+                }).catch(e => {
+                    console.log(e)
+                })
+        })
+
+
+    </script>
+</body>
+
+
+</html>
