@@ -64,6 +64,12 @@
         font-size: 28px;
     }
 
+    #tableWrapper {
+        align-self: flex-start;
+        overflow: auto;
+        width: 100%;
+    }
+
     table {
         border-collapse: collapse;
     }
@@ -71,7 +77,8 @@
     th,
     td {
         border: 1px solid white;
-        padding: 2px;
+        padding: 5px;
+        white-space: nowrap;
     }
 
     .loadImg {
@@ -84,6 +91,14 @@
             width: 100%;
             margin: 30% 0;
             box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 28px;
+        }
+
+        h2 {
+            font-size: 24px;
         }
 
         body {
@@ -123,7 +138,8 @@
             }
             button.disabled = true
             button.innerHTML = '<span>搜尋中請稍後<img class="loadImg" src="./loading.gif"/></span>'
-            let url = 'https://script.google.com/macros/s/AKfycbw9SGO_tSD-L9AYSePg_8-0MN284C3a9A4nYQNzcf-nQGr6ceI/exec?name='
+            // let url = 'https://script.google.com/macros/s/AKfycbw9SGO_tSD-L9AYSePg_8-0MN284C3a9A4nYQNzcf-nQGr6ceI/exec?name='
+            let url = 'https://script.google.com/macros/s/AKfycbxmA9mrmpfjnFkixIuuoTYSk2QHrfWyo1NGbjAQsRZY85F3ByqL/exec?name='
             fetch(url + input.value).then(function (response) {
                 return response.json();
             })
@@ -143,6 +159,8 @@
                         <th>保師</th>
                         <th>清口日期</th>
                         <th>開壇日期</th>
+                        <th>新道親法會</th>
+                        <th>忠恕學院</th>
                     </tr>`
                     result.forEach(item => {
                         tableDom += `
@@ -154,6 +172,8 @@
                             <td>${item.teacher}</td>
                             <td>${item.clearMouth || '無資料'}</td>
                             <td>${item.open || '無資料'}</td>
+                            <td>${item.magic || '- -'}</td>
+                            <td>${item.school || '- -'}</td>
                         </tr>`
                     });
                     tableDom += '</table>'
