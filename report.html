@@ -159,6 +159,7 @@
         const inputMonth = document.querySelector('#month')
         const inputDay = document.querySelector('#day')
         const form = document.querySelector('#form')
+        const button = document.querySelector('#submit')
         const todayYear = new Date().getFullYear()
 
         for (let i = todayYear; i >= 2000; i--) {
@@ -203,7 +204,10 @@
 
             console.log(data)
 
-            const url = 'https://script.google.com/macros/s/AKfycbxJ9QbL-gHMQD5IR8RN8PXWA50BL7gMIrRQL_EtbuH6OsA8EUJrANmYIv85-FDwIKha/exec'
+            const url = 'https://script.google.com/macros/s/AKfycbzPwRuiHBzk8-L5nJ5rgN45zf7j2anJNN1ZX1getwxIhzgGfSJFVUL6uHSmWFwfggF3/exec'
+
+            button.disabled = true
+            button.innerText = '回報中'
 
             fetch(url,
                 {
