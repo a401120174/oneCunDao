@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>先天道院樹林區道親資料查詢</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+</head>
+<style>
+    body {
+        background-image: url('./bg.jpg');
+        background-size: cover;
+        color: white;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 36px;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 2px #000;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 28px;
+        text-shadow: 2px 2px 2px #000;
+    }
+
+    p {
+        text-shadow: 2px 2px 2px #000;
+
+    }
+
+    .wrapper {
+        background-color: rgba(0, 0, 0, .5);
+        width: 60%;
+        margin: 15% auto 0;
+        padding: 20px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    button {
+        margin: auto;
+        font-size: 28px;
+    }
+
+
+    @media screen and (max-width: 600px) {
+        .wrapper {
+            width: 100%;
+            margin: 30% 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 28px;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+
+        body {
+            background-size: 145%;
+        }
+    }
+
+    form {
+        width: 90%;
+
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .date {
+        width: 30%;
+        appearance: auto;
+    }
+
+    .way {
+        appearance: auto;
+
+    }
+
+    .date+.date {
+        margin-left: 15px;
+    }
+
+    .dateGroup {
+        display: flex;
+    }
+</style>
+
+
+<body>
+    <div class="wrapper">
+        <h1>關懷回報系統</h1>
+        <form id="form">
+            <div class="form-group">
+                <label for="teacher">關懷人</label>
+                <input type="text" class="form-control" id="teacher" name="teacher" placeholder="請填入關懷人" required>
+            </div>
+            <div class="form-group">
+                <label for="student">被關懷者</label>
+                <input type="text" class="form-control" id="student" name="student" placeholder="請填入被關懷者" required>
+            </div>
+            <div class="form-group">
+                <label for="year">關懷日期</label>
+                <div class="dateGroup">
+                    <select class="form-control date" id="year" name="year">
+                    </select>
+                    <select class="form-control date" id="month" name="month">
+                    </select>
+                    <select class="form-control date" id="day" name="day">
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="way">方式</label>
+                <select class="form-control way" id="way" name="way" required>
+                    <option value="tel">電話</option>
+                    <option value="line">LINE</option>
+                    <option value="face">現場</option>
+                    <option value="other">其他(請在備註說明</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description">關懷簡述</label>
+                <textarea class="form-control" id="description" name="description" rows="3" placeholder="請填入關懷簡述..."
+                    required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="note">備註</label>
+                <textarea class="form-control" id="note" name="note" rows="3" placeholder="請填入備註"></textarea>
+            </div>
+            <button id="submit">
+                確認回報
+            </button>
+        </form>
+    </div>
+    <script>
+
+        const wrapper = document.querySelector('.wrapper')
+        const inputYear = document.querySelector('#year')
+        const inputMonth = document.querySelector('#month')
+        const inputDay = document.querySelector('#day')
+        const form = document.querySelector('#form')
+        const todayYear = new Date().getFullYear()
+
+        for (let i = todayYear; i >= 2000; i--) {
+            const option = document.createElement('option')
+            option.innerHTML = i
+            option.value = i
+            inputYear.appendChild(option)
+        }
+
+        inputYear.value = new Date().getFullYear()
+
+        for (let i = 1; i <= 12; i++) {
+            const option = document.createElement('option')
+            option.innerHTML = i
+            option.value = i
+
+            inputMonth.appendChild(option)
+        }
+
+        inputMonth.value = new Date().getMonth() + 1
+
+        for (let i = 1; i <= 31; i++) {
+            const option = document.createElement('option')
+            option.innerHTML = i
+            option.value = i
+
+            inputDay.appendChild(option)
+        }
+
+        inputDay.value = new Date().getDate()
+
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault()
+
+            const formData = new FormData(document.querySelector('#form'))
+            const data = {}
+
+            for (var pair of formData.entries()) {
+                data[pair[0]] = pair[1]
+            }
+
+            console.log(data)
+
+            const url = 'https://script.google.com/macros/s/AKfycbxJ9QbL-gHMQD5IR8RN8PXWA50BL7gMIrRQL_EtbuH6OsA8EUJrANmYIv85-FDwIKha/exec'
+
+            fetch(url,
+                {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8",
+                    },
+                }
+            ).then(function (response) {
+                wrapper.innerHTML = '回報成功!請自行關閉視窗'
+                return response.json();
+            })
+
+        })
+
+
+        // let button = document.querySelector('#submit')
+        // let tableWrapper = document.querySelector('#tableWrapper')
+
+        // let result = []
+        // let loading = false
+
+        // button.addEventListener('click', (e) => {
+        //     e.preventDefault()
+
+        //     if (!input.value.trim()) {
+        //         return
+        //     }
+        //     button.disabled = true
+        //     button.innerHTML = '<span>搜尋中請稍後<img class="loadImg" src="./loading.gif"/></span>'
+        //     // let url = 'https://script.google.com/macros/s/AKfycbw9SGO_tSD-L9AYSePg_8-0MN284C3a9A4nYQNzcf-nQGr6ceI/exec?name='
+        //     let url = 'https://script.google.com/macros/s/AKfycbxmA9mrmpfjnFkixIuuoTYSk2QHrfWyo1NGbjAQsRZY85F3ByqL/exec?name='
+        //     fetch(url + input.value).then(function (response) {
+        //         return response.json();
+        //     })
+        //         .then(function (myJson) {
+        //             console.log(myJson);
+        //             button.disabled = false
+        //             button.innerText = '搜尋'
+        //             result = myJson.data
+
+        //             let tableDom = '<table>'
+        //             tableDom += `
+        //                 <tr>
+        //                 <th>求道人姓名</th>
+        //                 <th>求道日期(農曆)</th>
+        //                 <th>點傳師</th>
+        //                 <th>引師</th>
+        //                 <th>保師</th>
+        //                 <th>清口日期</th>
+        //                 <th>開壇日期</th>
+        //                 <th>新道親法會</th>
+        //                 <th>忠恕學院</th>
+        //             </tr>`
+        //             result.forEach(item => {
+        //                 tableDom += `
+        //                     <tr>
+        //                     <td>${item.name}</td>
+        //                     <td>${item.date}</td>
+        //                     <td>${item.president}</td>
+        //                     <td>${item.guider}</td>
+        //                     <td>${item.teacher}</td>
+        //                     <td>${item.clearMouth || '無資料'}</td>
+        //                     <td>${item.open || '無資料'}</td>
+        //                     <td>${item.magic || '- -'}</td>
+        //                     <td>${item.school || '- -'}</td>
+        //                 </tr>`
+        //             });
+        //             tableDom += '</table>'
+
+        //             tableWrapper.innerHTML = tableDom
+        //         }).catch(e => {
+        //             console.log(e)
+        //         })
+        // })
+
+
+    </script>
+</body>
+
+
+</html>
