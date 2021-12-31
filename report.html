@@ -132,10 +132,10 @@
             <div class="form-group">
                 <label for="way">方式</label>
                 <select class="form-control way" id="way" name="way" required>
-                    <option value="tel">電話</option>
-                    <option value="line">LINE</option>
-                    <option value="face">現場</option>
-                    <option value="other">其他(請在備註說明</option>
+                    <option value="電話">電話</option>
+                    <option value="LINE關懷">LINE關懷</option>
+                    <option value="親自拜訪">親自拜訪</option>
+                    <option value="其他">其他(請在備註說明</option>
                 </select>
             </div>
             <div class="form-group">
@@ -285,7 +285,47 @@
         //         })
         // })
 
-
+        function sendMsg(token, replyToken, userMessage) {
+            var url = 'https://api.line.me/v2/bot/message/reply';
+            UrlFetchApp.fetch(url, {
+                'headers': {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    'Authorization': 'Bearer ' + token,
+                },
+                'method': 'post',
+                'payload': JSON.stringify({
+                    'replyToken': replyToken,
+                    'messages': [{
+                        'type': 'text',
+                        'text': '歡迎使用天熙堂即時報!$',
+                        "emojis": [
+                            {
+                                "index": 9,
+                                "productId": "5ac1bfd5040ab15980c9b435",
+                                "emojiId": "011"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "template",
+                        "altText": "This is a buttons template",
+                        "template": {
+                            "type": "buttons",
+                            "title": "回報",
+                            "text": "點我回報",
+                            "actions": [
+                                {
+                                    "type": "uri",
+                                    "label": "點我回報",
+                                    "uri": "https://liff.line.me/1656768088-oLZnPmJj"
+                                }
+                            ]
+                        }
+                    }
+                    ],
+                }),
+            });
+        }
     </script>
 </body>
 
