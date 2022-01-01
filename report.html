@@ -79,16 +79,18 @@
 
     form {
         width: 90%;
-
     }
 
     .form-group {
         margin-bottom: 15px;
     }
 
+    .form-control {
+        appearance: auto !important;
+    }
+
     .date {
         width: 30%;
-        appearance: auto;
     }
 
     .way {
@@ -110,6 +112,24 @@
     <div class="wrapper">
         <h1>關懷回報系統</h1>
         <form id="form">
+            <div class="form-group">
+                <label for="group">小組/班別</label>
+                <select class="form-control group" id="group" name="group" required>
+                    <option value="一貫家族">一貫家族</option>
+                    <option value="三多組">三多組</option>
+                    <option value="同心同德">同心同德</option>
+                    <option value="欣滿益足">欣滿益足</option>
+                    <option value="iHome">iHome</option>
+                    <option value="蘆洲101">蘆洲101</option>
+                    <option value="至善班">至善班</option>
+                    <option value="新民班">新民班</option>
+                    <option value="社青班">社青班</option>
+                    <option value="學青班">學青班</option>
+                    <option value="兒童班">兒童班</option>
+                    <option value="越南班">越南班</option>
+                    <option value="其他">其他(請在備註說明</option>
+                </select>
+            </div>
             <div class="form-group">
                 <label for="teacher">關懷人</label>
                 <input type="text" class="form-control" id="teacher" name="teacher" placeholder="請填入關懷人" required>
@@ -202,9 +222,7 @@
                 data[pair[0]] = pair[1]
             }
 
-            console.log(data)
-
-            const url = 'https://script.google.com/macros/s/AKfycbzPwRuiHBzk8-L5nJ5rgN45zf7j2anJNN1ZX1getwxIhzgGfSJFVUL6uHSmWFwfggF3/exec'
+            const url = 'https://script.google.com/macros/s/AKfycbxovCjXxfOXqtemlVt110fYXojPHpDrzm7kW-NOCVCs-oEzXSfbojT6CzWRAlG0Hahr/exec'
 
             button.disabled = true
             button.innerText = '回報中'
@@ -218,114 +236,11 @@
                     },
                 }
             ).then(function (response) {
-                wrapper.innerHTML = '回報成功!請自行關閉視窗'
+                wrapper.innerHTML = '<h2>回報成功!請自行關閉視窗</h2>'
                 return response.json();
             })
 
         })
-
-
-        // let button = document.querySelector('#submit')
-        // let tableWrapper = document.querySelector('#tableWrapper')
-
-        // let result = []
-        // let loading = false
-
-        // button.addEventListener('click', (e) => {
-        //     e.preventDefault()
-
-        //     if (!input.value.trim()) {
-        //         return
-        //     }
-        //     button.disabled = true
-        //     button.innerHTML = '<span>搜尋中請稍後<img class="loadImg" src="./loading.gif"/></span>'
-        //     // let url = 'https://script.google.com/macros/s/AKfycbw9SGO_tSD-L9AYSePg_8-0MN284C3a9A4nYQNzcf-nQGr6ceI/exec?name='
-        //     let url = 'https://script.google.com/macros/s/AKfycbxmA9mrmpfjnFkixIuuoTYSk2QHrfWyo1NGbjAQsRZY85F3ByqL/exec?name='
-        //     fetch(url + input.value).then(function (response) {
-        //         return response.json();
-        //     })
-        //         .then(function (myJson) {
-        //             console.log(myJson);
-        //             button.disabled = false
-        //             button.innerText = '搜尋'
-        //             result = myJson.data
-
-        //             let tableDom = '<table>'
-        //             tableDom += `
-        //                 <tr>
-        //                 <th>求道人姓名</th>
-        //                 <th>求道日期(農曆)</th>
-        //                 <th>點傳師</th>
-        //                 <th>引師</th>
-        //                 <th>保師</th>
-        //                 <th>清口日期</th>
-        //                 <th>開壇日期</th>
-        //                 <th>新道親法會</th>
-        //                 <th>忠恕學院</th>
-        //             </tr>`
-        //             result.forEach(item => {
-        //                 tableDom += `
-        //                     <tr>
-        //                     <td>${item.name}</td>
-        //                     <td>${item.date}</td>
-        //                     <td>${item.president}</td>
-        //                     <td>${item.guider}</td>
-        //                     <td>${item.teacher}</td>
-        //                     <td>${item.clearMouth || '無資料'}</td>
-        //                     <td>${item.open || '無資料'}</td>
-        //                     <td>${item.magic || '- -'}</td>
-        //                     <td>${item.school || '- -'}</td>
-        //                 </tr>`
-        //             });
-        //             tableDom += '</table>'
-
-        //             tableWrapper.innerHTML = tableDom
-        //         }).catch(e => {
-        //             console.log(e)
-        //         })
-        // })
-
-        function sendMsg(token, replyToken, userMessage) {
-            var url = 'https://api.line.me/v2/bot/message/reply';
-            UrlFetchApp.fetch(url, {
-                'headers': {
-                    'Content-Type': 'application/json; charset=UTF-8',
-                    'Authorization': 'Bearer ' + token,
-                },
-                'method': 'post',
-                'payload': JSON.stringify({
-                    'replyToken': replyToken,
-                    'messages': [{
-                        'type': 'text',
-                        'text': '歡迎使用天熙堂即時報!$',
-                        "emojis": [
-                            {
-                                "index": 9,
-                                "productId": "5ac1bfd5040ab15980c9b435",
-                                "emojiId": "011"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "template",
-                        "altText": "This is a buttons template",
-                        "template": {
-                            "type": "buttons",
-                            "title": "回報",
-                            "text": "點我回報",
-                            "actions": [
-                                {
-                                    "type": "uri",
-                                    "label": "點我回報",
-                                    "uri": "https://liff.line.me/1656768088-oLZnPmJj"
-                                }
-                            ]
-                        }
-                    }
-                    ],
-                }),
-            });
-        }
     </script>
 </body>
 
