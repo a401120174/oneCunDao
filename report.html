@@ -113,7 +113,6 @@
 <body>
     <div class="wrapper">
         <h1>關懷回報系統</h1>
-        <button id="close">132</button>
         <form id="form">
             <div class="form-group">
                 <label for="group">小組/班別</label>
@@ -184,13 +183,6 @@
         const form = document.querySelector('#form')
         const button = document.querySelector('#submit')
         const todayYear = new Date().getFullYear()
-
-        const close = document.querySelector('#close')
-
-        close.addEventListener('click', () => {
-            console.log(123)
-            liff.closeWindow()
-        })
 
         for (let i = todayYear; i >= 2000; i--) {
             const option = document.createElement('option')
