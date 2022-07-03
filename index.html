@@ -138,9 +138,8 @@
             }
             button.disabled = true
             button.innerHTML = '<span>搜尋中請稍後<img class="loadImg" src="./loading.gif"/></span>'
-            // let url = 'https://script.google.com/macros/s/AKfycbw9SGO_tSD-L9AYSePg_8-0MN284C3a9A4nYQNzcf-nQGr6ceI/exec?name='
-            let url = 'https://script.google.com/macros/s/AKfycbxmA9mrmpfjnFkixIuuoTYSk2QHrfWyo1NGbjAQsRZY85F3ByqL/exec?name='
-            fetch(url + input.value).then(function (response) {
+            let url = 'https://script.google.com/macros/s/AKfycbx6scO7EvvT61r7F9A_dFJ7QkKSjMEaQM7xjD8X1vQJcj4pZVv1yEgiE-XNRMiRvbhq/exec'
+            fetch(url + '?name=' + input.value).then(function (response) {
                 return response.json();
             })
                 .then(function (myJson) {
