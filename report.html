@@ -9,6 +9,7 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
 </head>
 <style>
     body {
@@ -44,7 +45,6 @@
         margin: auto;
         font-size: 28px;
     }
-
 
     @media screen and (max-width: 600px) {
         .wrapper {
@@ -97,7 +97,6 @@
 
     .way {
         appearance: auto;
-
     }
 
     .date+.date {
@@ -107,8 +106,16 @@
     .dateGroup {
         display: flex;
     }
-</style>
 
+    .result {
+        background-color: rgba(255, 255, 255, .8);
+        color: black;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
 
 <body>
     <div class="wrapper">
@@ -117,6 +124,9 @@
             <div class="form-group">
                 <label for="group">小組/班別</label>
                 <select class="form-control group" id="group" name="group" required>
+                    <option value="第一分區">第一分區</option>
+                    <option value="第二分區">第二分區</option>
+                    <option value="第三分區">第三分區</option>
                     <option value="一貫家族">一貫家族</option>
                     <option value="三多組">三多組</option>
                     <option value="同心同德">同心同德</option>
@@ -125,11 +135,9 @@
                     <option value="蘆洲101">蘆洲101</option>
                     <option value="至善班">至善班</option>
                     <option value="新民班">新民班</option>
-                    <option value="社青班">社青班</option>
-                    <option value="學青班">學青班</option>
-                    <option value="兒童班">兒童班</option>
-                    <option value="越南班">越南班</option>
-                    <option value="其他">其他(請在備註說明</option>
+                    <option value="青年班">青年班</option>
+＝                  <option value="兒童班">兒童班</option>
+                    <option value="其他">其他(請在備註說明)</option>
                 </select>
             </div>
             <div class="form-group">
@@ -157,7 +165,7 @@
                     <option value="電話">電話</option>
                     <option value="LINE關懷">LINE關懷</option>
                     <option value="親自拜訪">親自拜訪</option>
-                    <option value="其他">其他(請在備註說明</option>
+                    <option value="其他">其他(請在備註說明)</option>
                 </select>
             </div>
             <div class="form-group">
@@ -175,7 +183,6 @@
         </form>
     </div>
     <script>
-
         const wrapper = document.querySelector('.wrapper')
         const inputYear = document.querySelector('#year')
         const inputMonth = document.querySelector('#month')
@@ -213,7 +220,6 @@
 
         inputDay.value = new Date().getDate()
 
-
         form.addEventListener('submit', function (e) {
             e.preventDefault()
             const formData = new FormData(document.querySelector('#form'))
@@ -221,35 +227,53 @@
             for (var pair of formData.entries()) {
                 data[pair[0]] = pair[1]
             }
-            
+
             // 建立基本 URL
             let url = 'https://script.google.com/macros/s/AKfycbxNZXqU49FG_nPXCyv7cVYeCWKLMm_UQL8hZxcNTFARnmgZVSZ0x30meCOkD5sq3Y0YfA/exec'
-            
+
             // 將數據轉換為查詢字符串
             const queryString = new URLSearchParams()
             for (const key in data) {
                 queryString.append(key, data[key])
             }
-            
+
             // 將查詢字符串附加到 URL
             url += '?' + queryString.toString()
-            
+
             button.disabled = true
             button.innerText = '回報中'
-            
+
             fetch(url, {
                 method: 'GET'
-                // GET 請求不需要 body 和 Content-Type 頭
             }).then(function (response) {
-                wrapper.innerHTML = '<h2>回報成功!視窗將會自動關閉</h2>'
-                setTimeout(() => {
-                    liff.closeWindow()
-                }, 1000)
-                return response.json();
+                const resultDiv = document.createElement('div')
+                const form = document.querySelector('form')
+                resultDiv.className = 'result'
+                resultDiv.innerHTML = `${data.teacher}於 ${data.year}-${data.month}-${data.day} 透過『${data.way}』的方式關懷了${data.student}, ${data.description}${data.note ? `, ${data.note}` : ''}`
+                
+                const resultTtile = document.createElement('H3')
+                resultTtile.innerHTML = `請點擊下方文字, 會將文字複製起來, 再自行貼上訊息至LINE群組裡回報`
+                
+                wrapper.innerHTML = ''
+                wrapper.appendChild(resultTtile)
+                wrapper.appendChild(resultDiv)
+
+                resultDiv.setAttribute('data-clipboard-text', resultDiv.innerText)
+
+                new ClipboardJS('.result')
+
+                resultDiv.addEventListener('click', () => {
+                    alert('已複製到剪貼簿')
+
+                    // setTimeout(() => {
+                    //     liff.closeWindow()
+                    // }, 2000)
+                })
+
+                return response.json()
             })
         })
     </script>
 </body>
-
 
 </html>
