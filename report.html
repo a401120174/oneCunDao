@@ -249,7 +249,7 @@
                 const resultDiv = document.createElement('div')
                 const form = document.querySelector('form')
                 resultDiv.className = 'result'
-                resultDiv.innerHTML = `${data.teacher}於 ${data.year}-${data.month}-${data.day} 透過『${data.way}』的方式關懷了${data.student}, ${data.description}${data.note ? `, ${data.note}` : ''}`
+                resultDiv.innerHTML = `(${data.group}) ${data.teacher}於 ${data.year}-${data.month}-${data.day} 透過『${data.way}』的方式關懷了${data.student}, ${data.description}${data.note ? `, ${data.note}` : ''}`
                 
                 const resultTtile = document.createElement('H3')
                 resultTtile.innerHTML = `請點擊下方文字, 會將文字複製起來, 再自行貼上訊息至LINE群組裡回報`
