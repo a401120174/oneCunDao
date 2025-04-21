@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>關懷回報系統</title>
+    <title>成全關懷/小組活動即時報</title>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
@@ -136,20 +136,20 @@
                     <option value="至善班">至善班</option>
                     <option value="新民班">新民班</option>
                     <option value="青年班">青年班</option>
-＝                  <option value="兒童班">兒童班</option>
+                    <option value="兒童班">兒童班</option>
                     <option value="其他">其他(請在備註說明)</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="teacher">關懷人</label>
+                <label for="teacher">關懷/回報人</label>
                 <input type="text" class="form-control" id="teacher" name="teacher" placeholder="請填入關懷人" required>
             </div>
             <div class="form-group">
-                <label for="student">被關懷者</label>
-                <input type="text" class="form-control" id="student" name="student" placeholder="請填入被關懷者" required>
+                <label for="student">成全關懷對象</label>
+                <input type="text" class="form-control" id="student" name="student" placeholder="請填入成全關懷對象" required>
             </div>
             <div class="form-group">
-                <label for="year">關懷日期</label>
+                <label for="year">成全關懷/活動日期</label>
                 <div class="dateGroup">
                     <select class="form-control date" id="year" name="year">
                     </select>
@@ -169,12 +169,12 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="description">關懷簡述</label>
-                <textarea class="form-control" id="description" name="description" rows="3" placeholder="請填入關懷簡述..."
+                <label for="description">成全關懷/活動簡述</label>
+                <textarea class="form-control" id="description" name="description" rows="3" placeholder="請填入簡述..."
                     required></textarea>
             </div>
             <div class="form-group">
-                <label for="note">備註</label>
+                <label for="note">備註 （成全關懷、活動方式）</label>
                 <textarea class="form-control" id="note" name="note" rows="3" placeholder="請填入備註"></textarea>
             </div>
             <button id="submit">
