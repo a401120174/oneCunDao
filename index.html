@@ -1,191 +1,192 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>先天道院樹林區道親資料查詢</title>
-</head>
-<style>
-    body {
-        background-image: url('./bg.jpg');
-        background-size: cover;
-        color: white;
-        margin: 0;
-        padding: 0;
-    }
-
-    h1 {
-        text-align: center;
-        font-size: 36px;
-        margin-bottom: 20px;
-        text-shadow: 2px 2px 2px #000;
-    }
-
-    h2 {
-        text-align: center;
-        font-size: 28px;
-        text-shadow: 2px 2px 2px #000;
-    }
-
-    p {
-        text-shadow: 2px 2px 2px #000;
-
-    }
-
-    .wrapper {
-        background-color: rgba(0, 0, 0, .5);
-        width: 60%;
-        margin: 15% auto 0;
-        padding: 20px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    .inputBox {
-        padding: 5px 20px;
-        background-color: white;
-        border-radius: 20px;
-        width: 80%;
-        margin-bottom: 20px;
-    }
-
-    input {
-        margin: auto;
-        border: none;
-        width: 100%;
-        font-size: 20px;
-    }
-
-    button {
-        margin: auto;
-        font-size: 28px;
-    }
-
-    #tableWrapper {
-        align-self: flex-start;
-        overflow: auto;
-        width: 100%;
-    }
-
-    table {
-        border-collapse: collapse;
-    }
-
-    th,
-    td {
-        border: 1px solid white;
-        padding: 5px;
-        white-space: nowrap;
-    }
-
-    .loadImg {
-        width: 26px;
-        height: 26px;
-    }
-
-    @media screen and (max-width: 600px) {
-        .wrapper {
-            width: 100%;
-            margin: 30% 0;
-            box-sizing: border-box;
+    <title>天熙堂系統</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Shadcn UI 相關的字體 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" />
+    <!-- 配置 Tailwind 以支持 Shadcn UI 的風格 -->
+    <script>
+        tailwind.config = {
+            darkMode: ["class"],
+            theme: {
+                container: {
+                    center: true,
+                    padding: "2rem",
+                    screens: {
+                        "2xl": "1400px",
+                    },
+                },
+                extend: {
+                    colors: {
+                        border: "hsl(var(--border))",
+                        input: "hsl(var(--input))",
+                        ring: "hsl(var(--ring))",
+                        background: "hsl(var(--background))",
+                        foreground: "hsl(var(--foreground))",
+                        primary: {
+                            DEFAULT: "hsl(var(--primary))",
+                            foreground: "hsl(var(--primary-foreground))",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(var(--secondary))",
+                            foreground: "hsl(var(--secondary-foreground))",
+                        },
+                        destructive: {
+                            DEFAULT: "hsl(var(--destructive))",
+                            foreground: "hsl(var(--destructive-foreground))",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(var(--muted))",
+                            foreground: "hsl(var(--muted-foreground))",
+                        },
+                        accent: {
+                            DEFAULT: "hsl(var(--accent))",
+                            foreground: "hsl(var(--accent-foreground))",
+                        },
+                        popover: {
+                            DEFAULT: "hsl(var(--popover))",
+                            foreground: "hsl(var(--popover-foreground))",
+                        },
+                        card: {
+                            DEFAULT: "hsl(var(--card))",
+                            foreground: "hsl(var(--card-foreground))",
+                        },
+                    },
+                    borderRadius: {
+                        lg: "var(--radius)",
+                        md: "calc(var(--radius) - 2px)",
+                        sm: "calc(var(--radius) - 4px)",
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    keyframes: {
+                        "accordion-down": {
+                            from: { height: 0 },
+                            to: { height: "var(--radix-accordion-content-height)" },
+                        },
+                        "accordion-up": {
+                            from: { height: "var(--radix-accordion-content-height)" },
+                            to: { height: 0 },
+                        },
+                    },
+                    animation: {
+                        "accordion-down": "accordion-down 0.2s ease-out",
+                        "accordion-up": "accordion-up 0.2s ease-out",
+                    },
+                },
+            },
         }
-
-        h1 {
-            font-size: 28px;
-        }
-
-        h2 {
-            font-size: 24px;
+    </script>
+    <style>
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 222.2 84% 4.9%;
+            --primary: 222.2 47.4% 11.2%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96.1%;
+            --secondary-foreground: 222.2 47.4% 11.2%;
+            --muted: 210 40% 96.1%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96.1%;
+            --accent-foreground: 222.2 47.4% 11.2%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 222.2 84% 4.9%;
+            --radius: 0.5rem;
         }
 
         body {
-            background-size: 145%;
+            background-image: url('./bg.jpg');
+            background-size: cover;
+            color: white;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-    }
-</style>
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @media screen and (max-width: 600px) {
+            body {
+                background-size: 145%;
+            }
+        }
+    </style>
+</head>
 
 <body>
-    <div class="wrapper">
-        <h1>求道日期查詢服務</h1>
-        <h2>請輸入您的姓名</h1>
-            <div class="inputBox">
-                <input type="text" name="name" id="searchName" placeholder="請輸入姓名 ex:王小明">
+    <div class="container px-4 py-8">
+        <div class="w-full md:w-4/5 mx-auto p-6 bg-black/60 rounded-lg shadow-lg text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-center text-white mb-8 drop-shadow-md">天熙堂系統</h1>
+            <p class="text-lg text-white mb-10">歡迎使用天熙堂系統，請選擇以下功能</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- 母親節報名系統 -->
+                <a href="母親節報名系統.html" class="block">
+                    <div class="bg-black/50 p-6 rounded-lg shadow-md text-center card-hover border border-white/20">
+                        <div class="flex justify-center items-center mb-4 h-16">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-bold text-white mb-2">母親節報名系統</h2>
+                        <p class="text-white/80">活動報名及資料記錄</p>
+                    </div>
+                </a>
+
+                <!-- 道親資料查詢 -->
+                <a href="道親資料查詢.html" class="block">
+                    <div class="bg-black/50 p-6 rounded-lg shadow-md text-center card-hover border border-white/20">
+                        <div class="flex justify-center items-center mb-4 h-16">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-bold text-white mb-2">道親資料查詢</h2>
+                        <p class="text-white/80">查詢個人求道資訊</p>
+                    </div>
+                </a>
+
+                <!-- 關懷系統 -->
+                <a href="關懷系統.html" class="block">
+                    <div class="bg-black/50 p-6 rounded-lg shadow-md text-center card-hover border border-white/20">
+                        <div class="flex justify-center items-center mb-4 h-16">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-bold text-white mb-2">關懷系統</h2>
+                        <p class="text-white/80">成全關懷回報與記錄</p>
+                    </div>
+                </a>
             </div>
-            <button id="submit">
-                搜尋
-            </button>
-            <p>(由於資料數量眾多, 搜尋時間會比較長, 請見諒)</p>
-            <div id="tableWrapper">
-            </div>
+
+            <p class="text-sm text-white/70 mt-10">© 2025 天熙堂系統</p>
+        </div>
     </div>
-    <script>
-
-        let input = document.querySelector('#searchName')
-        let button = document.querySelector('#submit')
-        let tableWrapper = document.querySelector('#tableWrapper')
-
-        let result = []
-        let loading = false
-
-        button.addEventListener('click', (e) => {
-            e.preventDefault()
-
-            if (!input.value.trim()) {
-                return
-            }
-            button.disabled = true
-            button.innerHTML = '<span>搜尋中請稍後<img class="loadImg" src="./loading.gif"/></span>'
-            let url = 'https://script.google.com/macros/s/AKfycbx6scO7EvvT61r7F9A_dFJ7QkKSjMEaQM7xjD8X1vQJcj4pZVv1yEgiE-XNRMiRvbhq/exec'
-            fetch(url + '?name=' + input.value).then(function (response) {
-                return response.json();
-            })
-                .then(function (myJson) {
-                    console.log(myJson);
-                    button.disabled = false
-                    button.innerText = '搜尋'
-                    result = myJson.data
-
-                    let tableDom = '<table>'
-                    tableDom += `
-                        <tr>
-                        <th>求道人姓名</th>
-                        <th>求道日期(農曆)</th>
-                        <th>點傳師</th>
-                        <th>引師</th>
-                        <th>保師</th>
-                        <th>清口日期</th>
-                        <th>開壇日期</th>
-                        <th>新道親法會</th>
-                        <th>忠恕學院</th>
-                    </tr>`
-                    result.forEach(item => {
-                        tableDom += `
-                            <tr>
-                            <td>${item.name}</td>
-                            <td>${item.date}</td>
-                            <td>${item.president}</td>
-                            <td>${item.guider}</td>
-                            <td>${item.teacher}</td>
-                            <td>${item.clearMouth || '無資料'}</td>
-                            <td>${item.open || '無資料'}</td>
-                            <td>${item.magic || '- -'}</td>
-                            <td>${item.school || '- -'}</td>
-                        </tr>`
-                    });
-                    tableDom += '</table>'
-
-                    tableWrapper.innerHTML = tableDom
-                }).catch(e => {
-                    console.log(e)
-                })
-        })
-
-
-    </script>
 </body>
-
 
 </html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>母親節報名系統</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Shadcn UI 相關的字體 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" />
+    <!-- 引入其他必要的庫 -->
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+    <!-- 引入自定義樣式和腳本 -->
+    <link rel="stylesheet" href="css/mothersday.css" />
+</head>
+
+<body class="min-h-screen">
+    <div class="w-full md:w-3/5 mx-auto mt-[15%] md:mt-16 p-6 bg-black/50 rounded-lg shadow-lg">
+        <h1 class="text-2xl md:text-3xl font-bold text-center text-white mb-6 drop-shadow-md">母親節報名系統</h1>
+        <form id="form" class="space-y-4 w-full">
+            <div class="space-y-2">
+                <label for="group" class="text-sm font-medium text-white">分區/小組/班別</label>
+                <select class="w-full px-3 py-2 bg-white text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" id="group" name="group" required>
+                    <option value="第一分區">第一分區</option>
+                    <option value="第二分區">第二分區</option>
+                    <option value="第三分區">第三分區</option>
+                    <option value="一貫家族">一貫家族</option>
+                    <option value="三多組">三多組</option>
+                    <option value="同心同德">同心同德</option>
+                    <option value="欣滿益足">欣滿益足</option>
+                    <option value="iHome">iHome</option>
+                    <option value="蘆洲101">蘆洲101</option>
+                    <option value="至善班">至善班</option>
+                    <option value="新民班">新民班</option>
+                    <option value="青年班">青年班</option>
+                    <option value="兒童班">兒童班</option>
+                    <option value="其他">其他(請在備註說明)</option>
+                </select>
+            </div>
+            
+            <div class="space-y-2">
+                <label for="reporter" class="text-sm font-medium text-white">提報人</label>
+                <input type="text" class="w-full px-3 py-2 bg-white text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" id="reporter" name="reporter" placeholder="請填入提報人" required>
+            </div>
+            
+            <div class="space-y-2">
+                <label for="student" class="text-sm font-medium text-white">參加人資訊</label>
+                <div id="students-container" class="space-y-4">
+                    <div class="participant-form p-3 bg-white/10 rounded-lg">
+                        <div class="participant-header flex justify-between items-center mb-2">
+                            <h3 class="text-white font-medium">參加者 1</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="space-y-1">
+                                <label class="text-sm font-medium text-white">姓名</label>
+                                <input type="text" class="w-full px-3 py-2 bg-white text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" name="name1" placeholder="請填入姓名" required>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-sm font-medium text-white">性別</label>
+                                <div class="flex space-x-4">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="gender1" value="男" class="form-radio h-4 w-4" required checked>
+                                        <span class="ml-2 text-white">男</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="gender1" value="女" class="form-radio h-4 w-4">
+                                        <span class="ml-2 text-white">女</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-sm font-medium text-white">是否是母親</label>
+                                <div class="flex space-x-4">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="isMother1" value="是" class="form-radio h-4 w-4" required>
+                                        <span class="ml-2 text-white">是</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="isMother1" value="否" class="form-radio h-4 w-4" checked>
+                                        <span class="ml-2 text-white">否</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-sm font-medium text-white">年齡區間</label>
+                                <select class="w-full px-3 py-2 bg-white text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" name="ageRange1" required>
+                                    <option value="12歲以下">12歲以下</option>
+                                    <option value="13~64歲" selected>13~64歲</option>
+                                    <option value="65~76歲">65~76歲</option>
+                                    <option value="76歲以上">76歲以上</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-sm font-medium text-white">是否已經求道</label>
+                                <div class="flex space-x-4">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="isEnlightened1" value="是" class="form-radio h-4 w-4" required>
+                                        <span class="ml-2 text-white">是</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="isEnlightened1" value="否" class="form-radio h-4 w-4" checked>
+                                        <span class="ml-2 text-white">否</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <button type="button" id="add-student" class="px-3 py-1.5 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 text-sm font-medium flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        新增參加者
+                    </button>
+                </div>
+            </div>
+            
+            <div class="space-y-2">
+                <label for="note" class="text-sm font-medium text-white">備註</label>
+                <textarea class="w-full px-3 py-2 bg-white text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" id="note" name="note" rows="3" placeholder="請填入備註"></textarea>
+            </div>
+            
+            <button id="submit" type="submit" class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                確認回報
+            </button>
+        </form>
+    </div>
+    <!-- 引入自定義JavaScript -->
+    <script src="js/mothersday.js"></script>
+</body>
+
+</html>

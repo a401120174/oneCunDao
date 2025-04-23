@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>先天道院樹林區道親資料查詢</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Shadcn UI 相關的字體 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" />
+    <!-- 引入自定義 CSS -->
+    <link rel="stylesheet" href="./css/daoren.css" />
+    <!-- 配置 Tailwind 以支持 Shadcn UI 的風格 -->
+    <script>
+        tailwind.config = {
+            darkMode: ["class"],
+            theme: {
+                container: {
+                    center: true,
+                    padding: "2rem",
+                    screens: {
+                        "2xl": "1400px",
+                    },
+                },
+                extend: {
+                    colors: {
+                        border: "hsl(var(--border))",
+                        input: "hsl(var(--input))",
+                        ring: "hsl(var(--ring))",
+                        background: "hsl(var(--background))",
+                        foreground: "hsl(var(--foreground))",
+                        primary: {
+                            DEFAULT: "hsl(var(--primary))",
+                            foreground: "hsl(var(--primary-foreground))",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(var(--secondary))",
+                            foreground: "hsl(var(--secondary-foreground))",
+                        },
+                        destructive: {
+                            DEFAULT: "hsl(var(--destructive))",
+                            foreground: "hsl(var(--destructive-foreground))",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(var(--muted))",
+                            foreground: "hsl(var(--muted-foreground))",
+                        },
+                        accent: {
+                            DEFAULT: "hsl(var(--accent))",
+                            foreground: "hsl(var(--accent-foreground))",
+                        },
+                        popover: {
+                            DEFAULT: "hsl(var(--popover))",
+                            foreground: "hsl(var(--popover-foreground))",
+                        },
+                        card: {
+                            DEFAULT: "hsl(var(--card))",
+                            foreground: "hsl(var(--card-foreground))",
+                        },
+                    },
+                    borderRadius: {
+                        lg: "var(--radius)",
+                        md: "calc(var(--radius) - 2px)",
+                        sm: "calc(var(--radius) - 4px)",
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    keyframes: {
+                        "accordion-down": {
+                            from: { height: 0 },
+                            to: { height: "var(--radix-accordion-content-height)" },
+                        },
+                        "accordion-up": {
+                            from: { height: "var(--radix-accordion-content-height)" },
+                            to: { height: 0 },
+                        },
+                    },
+                    animation: {
+                        "accordion-down": "accordion-down 0.2s ease-out",
+                        "accordion-up": "accordion-up 0.2s ease-out",
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="min-h-screen">
+    <div class="w-full md:w-3/5 mx-auto mt-[15%] md:mt-16 p-6 bg-black/50 rounded-lg shadow-lg">
+        <h1 class="text-2xl md:text-3xl font-bold text-center text-white mb-4 drop-shadow-md">求道日期查詢服務</h1>
+        <h2 class="text-xl md:text-2xl font-semibold text-center text-white mb-6 drop-shadow-md">請輸入您的姓名</h2>
+        
+        <div class="flex flex-col items-center mb-6">
+            <div class="w-full md:w-4/5 mb-4">
+                <div class="relative">
+                    <input type="text" id="searchName" 
+                        class="block w-full px-4 py-3 bg-white text-gray-900 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+                        placeholder="請輸入姓名 ex:王小明">
+                </div>
+            </div>
+            
+            <button id="submit" 
+                class="px-6 py-2 bg-primary text-white rounded-md hover:bg-opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 text-lg font-medium">
+                搜尋
+            </button>
+            
+            <p class="mt-4 text-sm text-white drop-shadow-md">(由於資料數量眾多, 搜尋時間會比較長, 請見諒)</p>
+        </div>
+        
+        <div id="tableWrapper" class="w-full overflow-auto">
+            <!-- 查詢結果將顯示在這裡 -->
+        </div>
+    </div>
+    
+    <script>
+        let input = document.querySelector('#searchName')
+        let button = document.querySelector('#submit')
+        let tableWrapper = document.querySelector('#tableWrapper')
+
+        let result = []
+        let loading = false
+
+        button.addEventListener('click', (e) => {
+            e.preventDefault()
+
+            if (!input.value.trim()) {
+                return
+            }
+            
+            button.disabled = true
+            button.innerHTML = '<span class="flex items-center">搜尋中請稍後 <img class="loadImg ml-2" src="./loading.gif"/></span>'
+            
+            let url = 'https://script.google.com/macros/s/AKfycbx6scO7EvvT61r7F9A_dFJ7QkKSjMEaQM7xjD8X1vQJcj4pZVv1yEgiE-XNRMiRvbhq/exec'
+            
+            fetch(url + '?name=' + input.value).then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                console.log(myJson);
+                button.disabled = false
+                button.innerText = '搜尋'
+                result = myJson.data
+
+                if (result.length === 0) {
+                    tableWrapper.innerHTML = '<p class="text-center text-white my-4">查無資料，請確認姓名是否正確</p>';
+                    return;
+                }
+
+                let tableDom = '<div class="rounded-md border border-white/30 overflow-hidden">';
+                tableDom += '<table class="w-full">';
+                tableDom += `
+                    <thead>
+                        <tr class="bg-black/40">
+                            <th class="px-3 py-2 text-left border-b border-white/30">求道人姓名</th>
+                            <th class="px-3 py-2 text-left border-b border-white/30">求道日期(農曆)</th>
+                            <th class="px-3 py-2 text-left border-b border-white/30">點傳師</th>
+                            <th class="px-3 py-2 text-left border-b border-white/30">引師</th>
+                            <th class="px-3 py-2 text-left border-b border-white/30">保師</th>
+                            <th class="px-3 py-2 text-left border-b border-white/30">清口日期</th>
+                            <th class="px-3 py-2 text-left border-b border-white/30">開壇日期</th>
+                            <th class="px-3 py-2 text-left border-b border-white/30">新道親法會</th>
+                            <th class="px-3 py-2 text-left border-b border-white/30">忠恕學院</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+                
+                result.forEach((item, index) => {
+                    tableDom += `
+                        <tr class="${index % 2 === 0 ? 'bg-black/20' : 'bg-black/30'}">
+                            <td class="px-3 py-2 whitespace-nowrap border-b border-white/10">${item.name}</td>
+                            <td class="px-3 py-2 whitespace-nowrap border-b border-white/10">${item.date}</td>
+                            <td class="px-3 py-2 whitespace-nowrap border-b border-white/10">${item.president}</td>
+                            <td class="px-3 py-2 whitespace-nowrap border-b border-white/10">${item.guider}</td>
+                            <td class="px-3 py-2 whitespace-nowrap border-b border-white/10">${item.teacher}</td>
+                            <td class="px-3 py-2 whitespace-nowrap border-b border-white/10">${item.clearMouth || '無資料'}</td>
+                            <td class="px-3 py-2 whitespace-nowrap border-b border-white/10">${item.open || '無資料'}</td>
+                            <td class="px-3 py-2 whitespace-nowrap border-b border-white/10">${item.magic || '- -'}</td>
+                            <td class="px-3 py-2 whitespace-nowrap border-b border-white/10">${item.school || '- -'}</td>
+                        </tr>`;
+                });
+                
+                tableDom += '</tbody></table></div>';
+
+                tableWrapper.innerHTML = tableDom;
+            }).catch(e => {
+                console.log(e);
+                button.disabled = false;
+                button.innerText = '搜尋';
+                tableWrapper.innerHTML = '<p class="text-center text-white my-4">發生錯誤，請稍後再試</p>';
+            });
+        });
+    </script>
+</body>
+
+</html>

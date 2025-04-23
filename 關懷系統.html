@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成全關懷/小組活動即時報</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Shadcn UI 相關的字體 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" />
+    <!-- 引入其他必要的庫 -->
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+    <!-- 引入自定義樣式 -->
+    <link rel="stylesheet" href="./css/care.css" />
+    <!-- 配置 Tailwind 以支持 Shadcn UI 的風格 -->
+    <script>
+        tailwind.config = {
+            darkMode: ["class"],
+            theme: {
+                container: {
+                    center: true,
+                    padding: "2rem",
+                    screens: {
+                        "2xl": "1400px",
+                    },
+                },
+                extend: {
+                    colors: {
+                        border: "hsl(var(--border))",
+                        input: "hsl(var(--input))",
+                        ring: "hsl(var(--ring))",
+                        background: "hsl(var(--background))",
+                        foreground: "hsl(var(--foreground))",
+                        primary: {
+                            DEFAULT: "hsl(var(--primary))",
+                            foreground: "hsl(var(--primary-foreground))",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(var(--secondary))",
+                            foreground: "hsl(var(--secondary-foreground))",
+                        },
+                        destructive: {
+                            DEFAULT: "hsl(var(--destructive))",
+                            foreground: "hsl(var(--destructive-foreground))",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(var(--muted))",
+                            foreground: "hsl(var(--muted-foreground))",
+                        },
+                        accent: {
+                            DEFAULT: "hsl(var(--accent))",
+                            foreground: "hsl(var(--accent-foreground))",
+                        },
+                        popover: {
+                            DEFAULT: "hsl(var(--popover))",
+                            foreground: "hsl(var(--popover-foreground))",
+                        },
+                        card: {
+                            DEFAULT: "hsl(var(--card))",
+                            foreground: "hsl(var(--card-foreground))",
+                        },
+                    },
+                    borderRadius: {
+                        lg: "var(--radius)",
+                        md: "calc(var(--radius) - 2px)",
+                        sm: "calc(var(--radius) - 4px)",
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    keyframes: {
+                        "accordion-down": {
+                            from: { height: 0 },
+                            to: { height: "var(--radix-accordion-content-height)" },
+                        },
+                        "accordion-up": {
+                            from: { height: "var(--radix-accordion-content-height)" },
+                            to: { height: 0 },
+                        },
+                    },
+                    animation: {
+                        "accordion-down": "accordion-down 0.2s ease-out",
+                        "accordion-up": "accordion-up 0.2s ease-out",
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="min-h-screen">
+    <div class="w-full md:w-3/5 mx-auto mt-[15%] md:mt-16 p-6 bg-black/50 rounded-lg shadow-lg">
+        <h1 class="text-2xl md:text-3xl font-bold text-center text-white mb-6 drop-shadow-md">關懷回報系統</h1>
+        <form id="form" class="space-y-4 w-full">
+            <div class="space-y-2">
+                <label for="group" class="text-sm font-medium text-white">小組/班別</label>
+                <select class="w-full px-3 py-2 bg-white text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" id="group" name="group" required>
+                    <option value="第一分區">第一分區</option>
+                    <option value="第二分區">第二分區</option>
+                    <option value="第三分區">第三分區</option>
+                    <option value="一貫家族">一貫家族</option>
+                    <option value="三多組">三多組</option>
+                    <option value="同心同德">同心同德</option>
+                    <option value="欣滿益足">欣滿益足</option>
+                    <option value="iHome">iHome</option>
+                    <option value="蘆洲101">蘆洲101</option>
+                    <option value="至善班">至善班</option>
+                    <option value="新民班">新民班</option>
+                    <option value="青年班">青年班</option>
+                    <option value="兒童班">兒童班</option>
+                    <option value="其他">其他(請在備註說明)</option>
+                </select>
+            </div>
+            
+            <div class="space-y-2">
+                <label for="teacher" class="text-sm font-medium text-white">關懷/回報人</label>
+                <input type="text" class="w-full px-3 py-2 bg-white text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" id="teacher" name="teacher" placeholder="請填入關懷人" required>
+            </div>
+            
+            <div class="space-y-2">
+                <label for="student" class="text-sm font-medium text-white">成全關懷對象</label>
+                <input type="text" class="w-full px-3 py-2 bg-white text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" id="student" name="student" placeholder="請填入成全關懷對象" required>
+            </div>
+            
+            <div class="space-y-2">
+                <label for="year" class="text-sm font-medium text-white">成全關懷/活動日期</label>
+                <div class="flex space-x-2">
+                    <select class="w-1/3 px-3 py-2 bg-white text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" id="year" name="year">
+                    </select>
+                    <select class="w-1/3 px-3 py-2 bg-white text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" id="month" name="month">
+                    </select>
+                    <select class="w-1/3 px-3 py-2 bg-white text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" id="day" name="day">
+                    </select>
+                </div>
+            </div>
+            
+            <div class="space-y-2">
+                <label for="way" class="text-sm font-medium text-white">方式</label>
+                <select class="w-full px-3 py-2 bg-white text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" id="way" name="way" required>
+                    <option value="電話">電話</option>
+                    <option value="LINE關懷">LINE關懷</option>
+                    <option value="親自拜訪">親自拜訪</option>
+                    <option value="其他">其他(請在備註說明)</option>
+                </select>
+            </div>
+            
+            <div class="space-y-2">
+                <label for="description" class="text-sm font-medium text-white">成全關懷/活動簡述</label>
+                <textarea class="w-full px-3 py-2 bg-white text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" id="description" name="description" rows="3" placeholder="請填入簡述..." required></textarea>
+            </div>
+            
+            <div class="space-y-2">
+                <label for="note" class="text-sm font-medium text-white">備註 （成全關懷、活動方式）</label>
+                <textarea class="w-full px-3 py-2 bg-white text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" id="note" name="note" rows="3" placeholder="請填入備註"></textarea>
+            </div>
+            
+            <button id="submit" type="submit" class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                確認回報
+            </button>
+        </form>
+    </div>
+    
+    <!-- 引入自定義JavaScript -->
+    <script src="./js/care.js"></script>
+</body>
+
+</html>
