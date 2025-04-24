@@ -143,12 +143,12 @@ function addStudentField() {
                     <label class="text-sm font-medium text-white">性別</label>
                     <div class="flex space-x-4">
                         <label class="inline-flex items-center">
-                            <input type="radio" name="gender${studentCount}" value="男" class="form-radio h-4 w-4" required checked>
-                            <span class="ml-2 text-white">男</span>
+                            <input type="radio" name="gender${studentCount}" value="乾道" class="form-radio h-4 w-4" required checked>
+                            <span class="ml-2 text-white">乾道</span>
                         </label>
                         <label class="inline-flex items-center">
-                            <input type="radio" name="gender${studentCount}" value="女" class="form-radio h-4 w-4">
-                            <span class="ml-2 text-white">女</span>
+                            <input type="radio" name="gender${studentCount}" value="坤道" class="form-radio h-4 w-4">
+                            <span class="ml-2 text-white">坤道</span>
                         </label>
                     </div>
                 </div>
