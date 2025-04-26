@@ -132,7 +132,7 @@
             button.disabled = true
             button.innerHTML = '<span class="flex items-center">搜尋中請稍後 <img class="loadImg ml-2" src="./loading.gif"/></span>'
             
-            let url = 'https://script.google.com/macros/s/AKfycbx6scO7EvvT61r7F9A_dFJ7QkKSjMEaQM7xjD8X1vQJcj4pZVv1yEgiE-XNRMiRvbhq/exec'
+            let url = 'https://script.google.com/macros/s/AKfycbyOu2oJTGwmEJsSrcxOfnuecry8mwoIc9SSQVk-YE1QJsoYSYj9mbtZsx6uK4Bxb3OR/exec'
             
             fetch(url + '?name=' + input.value).then(function (response) {
                 return response.json();
