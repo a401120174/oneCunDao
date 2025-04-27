@@ -77,6 +77,10 @@ const form = document.querySelector('#form');
 const button = document.querySelector('#submit');
 const studentsContainer = document.querySelector('#students-container');
 const addStudentButton = document.querySelector('#add-student');
+const confirmModal = document.querySelector('#confirmModal');
+const modalContent = document.querySelector('#modalContent');
+const cancelButton = document.querySelector('#cancelButton');
+const confirmButton = document.querySelector('#confirmButton');
 
 // Create toast container div
 const toastContainer = document.createElement('div');
@@ -237,10 +241,93 @@ function updateParticipantNumbers() {
     }
 }
 
+// 顯示確認 Modal
+function showConfirmModal() {
+    const formData = new FormData(form);
+    const data = {};
+    for (var pair of formData.entries()) {
+        data[pair[0]] = pair[1];
+    }
+
+    // 清空 modal 內容
+    modalContent.innerHTML = '';
+
+    // 添加基本資訊
+    const basicInfoDiv = document.createElement('div');
+    basicInfoDiv.className = 'p-3 bg-gray-100 rounded-lg';
+    basicInfoDiv.innerHTML = `
+        <p class="mb-1"><strong>分區/小組/班別:</strong> ${data.group}</p>
+        <p><strong>提報人:</strong> ${data.reporter}</p>
+    `;
+    modalContent.appendChild(basicInfoDiv);
+
+    // 添加所有參加者資訊
+    for (let i = 1; i <= studentCount; i++) {
+        const participantDiv = document.createElement('div');
+        participantDiv.className = 'p-3 bg-gray-100 rounded-lg';
+        
+        const name = data[`name${i}`] || '';
+        const gender = data[`gender${i}`] || '';
+        const isMother = data[`isMother${i}`] || '否';
+        const ageRange = data[`ageRange${i}`] || '';
+        const isEnlightened = data[`isEnlightened${i}`] || '否';
+        
+        participantDiv.innerHTML = `
+            <h4 class="font-medium mb-1">參加者 ${i}</h4>
+            <p class="mb-1"><strong>姓名:</strong> ${name}</p>
+            <p class="mb-1"><strong>性別:</strong> ${gender}</p>
+            <p class="mb-1"><strong>是否母親:</strong> ${isMother}</p>
+            <p class="mb-1"><strong>年齡區間:</strong> ${ageRange}</p>
+            <p><strong>是否已求道:</strong> ${isEnlightened}</p>
+        `;
+        modalContent.appendChild(participantDiv);
+    }
+
+    // 添加備註資訊
+    if (data.note) {
+        const noteDiv = document.createElement('div');
+        noteDiv.className = 'p-3 bg-gray-100 rounded-lg';
+        noteDiv.innerHTML = `<p><strong>備註:</strong> ${data.note}</p>`;
+        modalContent.appendChild(noteDiv);
+    }
+
+    // 顯示 modal
+    confirmModal.classList.remove('hidden');
+}
+
+// 隱藏確認 Modal
+function hideConfirmModal() {
+    confirmModal.classList.add('hidden');
+}
+
+// 表單驗證
+function validateForm() {
+    // 簡單的前端驗證
+    const requiredFields = [
+        form.querySelector('[name="group"]'),
+        form.querySelector('[name="reporter"]')
+    ];
+
+    for (let i = 1; i <= studentCount; i++) {
+        requiredFields.push(form.querySelector(`[name="name${i}"]`));
+    }
+
+    for (const field of requiredFields) {
+        if (!field.value.trim()) {
+            showToast(`請填寫必填欄位: ${field.placeholder || field.name}`, 'error');
+            field.focus();
+            return false;
+        }
+    }
+
+    return true;
+}
+
 // Handle form submission
 function handleFormSubmit(e) {
-    e.preventDefault();
-    const formData = new FormData(document.querySelector('#form'));
+    if (e) e.preventDefault();
+    
+    const formData = new FormData(form);
     const data = {};
     for (var pair of formData.entries()) {
         data[pair[0]] = pair[1];
@@ -278,7 +365,7 @@ function handleFormSubmit(e) {
             button.innerText = '發送失敗，請重試';
             setTimeout(() => {
                 button.disabled = false;
-                button.innerText = '送出';
+                button.innerText = '確認回報';
                 button.classList.remove('opacity-70', 'cursor-not-allowed');
             }, 2000);
         });
@@ -383,15 +470,29 @@ function createResultDisplay(data) {
 
 // Initialize application
 function initApp() {
-    // 移除不需要的日期選擇器初始化
-    // addStudentButton 可能沒有正確的事件監聽器
+    // 事件監聽
     if (addStudentButton) {
         addStudentButton.addEventListener('click', addStudentField);
     } else {
         console.error('找不到新增參加者按鈕');
     }
     
-    form.addEventListener('submit', handleFormSubmit);
+    // 修改提交按鈕的行為，點擊時顯示確認 modal
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (validateForm()) {
+            showConfirmModal();
+        }
+    });
+    
+    // 綁定確認 modal 的按鈕事件
+    cancelButton.addEventListener('click', hideConfirmModal);
+    
+    confirmButton.addEventListener('click', function() {
+        hideConfirmModal();
+        // 調用表單提交函數
+        handleFormSubmit();
+    });
 }
 
 // Run initialization when DOM is loaded
